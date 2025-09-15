@@ -82,9 +82,14 @@
       <button class="btn" id="lang-en" aria-label="English">EN</button>
     </div>
 
-    <div class="bg-video" aria-hidden="true">
-      <video src="hero.mp4" poster="poster.jpg" autoplay muted loop playsinline></video>
-    </div>
+    <div class="bg-media" aria-hidden="true">
+      <!-- Image de secours (toujours visible au départ) -->
+      <img src="poster.jpg" alt="">
+      <!-- Vidéo (ne s'affichera que quand elle joue) -->
+      <video poster="poster.jpg" autoplay muted loop playsinline preload="none">
+      <source src="hero.mp4" type="video/mp4">
+      </video>
+  </div>
     <div class="bg-overlay" aria-hidden="true"></div>
 
     <div class="hero-inner container">
@@ -281,5 +286,20 @@
     document.getElementById("lang-fr")?.addEventListener("click", ()=>applyLang("fr"));
     document.getElementById("lang-en")?.addEventListener("click", ()=>applyLang("en"));
   </script>
+  <script>
+  // Fond: passe à la vidéo seulement si elle joue
+  const mediaWrap = document.querySelector('.bg-media');
+  const vid = mediaWrap?.querySelector('video');
+  if (vid && mediaWrap) {
+    const showVideo = () => mediaWrap.classList.add('playing');
+    vid.addEventListener('playing', showVideo, { once: true });
+    vid.addEventListener('loadeddata', () => {
+      // certains navigateurs déclenchent loadeddata avant playing → on tente un play
+      const p = vid.play?.();
+      if (p && typeof p.then === 'function') p.catch(()=>{}); // ignore les blocages
+    });
+    vid.addEventListener('error', () => mediaWrap.classList.remove('playing'));
+  }
+</script>
 </body>
 </html>
