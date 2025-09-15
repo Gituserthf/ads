@@ -297,19 +297,31 @@
     document.getElementById("lang-en")?.addEventListener("click", ()=>applyLang("en"));
   </script>
   <script>
-  // Fond: passe à la vidéo seulement si elle joue
   const mediaWrap = document.querySelector('.bg-media');
   const vid = mediaWrap?.querySelector('video');
+
   if (vid && mediaWrap) {
+    // Assure les attributs côté JS (certains navigateurs sont tatillons)
+    vid.muted = true;
+    vid.playsInline = true; // idem playsinline
+    // iOS plus ancien: l’attribut HTML webkit-playsinline suffit
+
     const showVideo = () => mediaWrap.classList.add('playing');
+
+    // Affiche dès que le flux est vraiment prêt
     vid.addEventListener('playing', showVideo, { once: true });
-    vid.addEventListener('loadeddata', () => {
-      // certains navigateurs déclenchent loadeddata avant playing → on tente un play
-      const p = vid.play?.();
-      if (p && typeof p.then === 'function') p.catch(()=>{}); // ignore les blocages
-    });
+    vid.addEventListener('canplay', () => vid.play().catch(() => {}), { once: true });
+    vid.addEventListener('canplaythrough', () => vid.play().catch(() => {}), { once: true });
+
+    // Lance une tentative immédiate aussi (au cas où)
+    Promise.resolve().then(() => vid.play()).catch(() => { /* autoplay bloqué → l'image reste */ });
+
+    // Si erreur, on reste sur l'image
     vid.addEventListener('error', () => mediaWrap.classList.remove('playing'));
   }
 </script>
+
+
+  
 </body>
 </html>
