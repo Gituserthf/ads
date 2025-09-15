@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-i18n-head="title">3CTHS Pixel Game — Site Officiel</title>
+  <meta name="description" content="3CTHS Pixel Game — découvre le trailer, télécharge le jeu et soutiens le projet sur Ko-fi." data-i18n-head="meta_desc_fr"/>
+  <link rel="icon" href="favicon.ico" />
+  <meta property="og:title" content="3CTHS Pixel Game — Site Officiel" data-i18n-head="og_title"/>
+  <meta property="og:description" content="Découvre le trailer, télécharge le jeu et soutiens le projet." data-i18n-head="og_desc"/>
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="poster.jpg" />
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    :root{
+      --bg:#0b0b0c; --fg:#e9ecf1; --muted:#a4adba;
+      --accent:#66e3ff; --accent-2:#9cff6f;
+      --card:#111218cc; --radius:18px; --shadow:0 10px 30px rgba(0,0,0,.45);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      color:var(--fg); background:var(--bg); line-height:1.5; -webkit-font-smoothing:antialiased;
+    }
+    a{color:inherit; text-decoration:none}
+    .container{max-width:1080px; margin:0 auto; padding:0 20px}
+    .hero{position:relative; min-height:86vh; display:grid; place-items:center; overflow:hidden; border-bottom:1px solid #1b1c22}
+    .bg-video{position:absolute; inset:0; z-index:-2; overflow:hidden}
+    .bg-video video{width:100%; height:100%; object-fit:cover; filter:brightness(.45) saturate(1.1)}
+    .bg-overlay{position:absolute; inset:0; background:radial-gradient(60% 60% at 50% 40%, #0000, #000 70%); z-index:-1}
+    .hero-inner{text-align:center; padding:80px 0; backdrop-filter:saturate(120%)}
+    h1{font-size:clamp(32px,6vw,64px); margin:0 0 10px}
+    .lead{font-size:clamp(16px,2.2vw,20px); color:var(--muted); margin:0 auto 28px; max-width:720px}
+    .cta{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:14px 18px; border-radius:14px; font-weight:700;
+      background:#1a1b22; border:1px solid #2a2c35; box-shadow:var(--shadow);
+      transition:transform .08s ease, border-color .2s ease;
+    }
+    .btn:hover{transform:translateY(-2px); border-color:#3a3d48}
+    .btn.accent{background:linear-gradient(135deg, var(--accent), var(--accent-2)); color:#031015; border:none}
+    .lang-switch{position:absolute; top:16px; right:16px; display:flex; gap:8px}
+    .lang-switch .btn{padding:8px 12px; font-weight:600}
+    .badges{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:10px}
+    .badge{padding:7px 12px; border-radius:999px; background:#14151b; border:1px solid #242633; color:#b6bfcc; font-size:12px}
+    section{padding:70px 0}
+    .card{background:var(--card); border:1px solid #1e202a; border-radius:var(--radius); box-shadow:var(--shadow)}
+    .grid{display:grid; gap:22px}
+    @media(min-width:900px){ .grid-2{grid-template-columns:1.2fr .8fr} }
+    .video-wrap{position:relative; border-radius:var(--radius); overflow:hidden; aspect-ratio:16/9; background:#000}
+    .video-wrap iframe, .video-wrap .video-lazy{position:absolute; inset:0; width:100%; height:100%; border:0}
+    .video-lazy{display:grid; place-items:center; cursor:pointer; background:#000}
+    .video-lazy img{width:100%; height:100%; object-fit:cover; filter:brightness(.8)}
+    .video-lazy .play{
+      position:absolute; width:84px; height:84px; border-radius:50%;
+      background:#fff; display:grid; place-items:center; box-shadow:0 10px 30px rgba(0,0,0,.6);
+    }
+    .video-lazy .play:after{
+      content:""; border-style:solid; border-width:12px 0 12px 18px; border-color:transparent transparent transparent #000; margin-left:4px;
+    }
+    .feature{padding:18px; border-radius:14px; background:#14151b; border:1px solid #242633}
+    .muted{color:var(--muted)}
+    footer{padding:40px 0 70px; color:#95a0b1}
+    .footer-grid{display:grid; gap:16px}
+    @media(min-width:800px){ .footer-grid{grid-template-columns:1fr auto} }
+    .link{color:#cfe7ff; text-decoration:underline}
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <!-- Switch langue -->
+    <div class="lang-switch" aria-label="Language switcher">
+      <button class="btn" id="lang-fr" aria-label="Français">FR</button>
+      <button class="btn" id="lang-en" aria-label="English">EN</button>
+    </div>
+
+    <div class="bg-video" aria-hidden="true">
+      <video src="hero.mp4" poster="poster.jpg" autoplay muted loop playsinline></video>
+    </div>
+    <div class="bg-overlay" aria-hidden="true"></div>
+
+    <div class="hero-inner container">
+      <h1 data-i18n="title">3CTHS Pixel Game</h1>
+      <p class="lead" data-i18n="lead">Un monde rétro nerveux, des combats rapides et des secrets à dévoiler.<br>Regarde le trailer, télécharge le jeu et soutiens le projet.</p>
+
+      <div class="cta">
+        <a class="btn accent" data-i18n="cta_play" href="https://play.google.com/store/apps/details?id=org.grawlapp.grawlapp&hl=en-US" target="_blank" rel="noopener">📲 Télécharger sur Google Play</a>
+        <a class="btn" data-i18n="cta_kofi" href="https://ko-fi.com/3cthspixelgame" target="_blank" rel="noopener">☕ Soutenir sur Ko-fi</a>
+      </div>
+
+      <div class="badges">
+        <span class="badge" data-i18n="badge_trailer">🎬 Trailer intégré</span>
+        <span class="badge" data-i18n="badge_fast">⚡ Chargement rapide</span>
+        <span class="badge" data-i18n="badge_https">🔒 HTTPS</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- TRAILER + FEATURES -->
+  <section>
+    <div class="container grid grid-2">
+      <div class="card" style="padding:16px;">
+        <div class="video-wrap" id="trailer">
+          <button class="video-lazy" id="lazyPlay" aria-label="Lire le trailer">
+            <img src="https://i.ytimg.com/vi/fyeP8jT8oVY/hqdefault.jpg" alt="Aperçu du trailer">
+            <span class="play" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="feature">
+          <h3 style="margin:0 0 6px" data-i18n="feat_gameplay_t">Gameplay Arcade</h3>
+          <p class="muted" style="margin:0" data-i18n="feat_gameplay_d">Des niveaux courts et intenses, parfaits pour jouer en mobilité.</p>
+        </div>
+        <div class="feature">
+          <h3 style="margin:0 0 6px" data-i18n="feat_pixel_t">Pixel-art travaillé</h3>
+          <p class="muted" style="margin:0" data-i18n="feat_pixel_d">Ambiance rétro avec des effets modernes pour une vraie personnalité visuelle.</p>
+        </div>
+        <div class="feature">
+          <h3 style="margin:0 0 6px" data-i18n="feat_challenge_t">Défis & Secrets</h3>
+          <p class="muted" style="margin:0" data-i18n="feat_challenge_d">Boss, power-ups, speedruns et zones cachées.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section>
+    <div class="container card" style="padding:22px;">
+      <div class="grid" style="align-items:center;">
+        <div>
+          <h2 style="margin:0 0 8px;" data-i18n="contact_h">Contact</h2>
+          <p class="muted" style="margin:0 0 14px;" data-i18n="contact_p">Une question, une idée, une opportunité&nbsp;?</p>
+          <a class="btn" data-i18n="contact_btn" href="mailto:cccthspixelgame@gmail.com?subject=Contact%203CTHS%20Pixel%20Game">Écrire un e-mail</a>
+        </div>
+        <div class="muted" style="font-size:14px">
+          <p style="margin:0 0 8px;" data-i18n="follow_p1">Tu peux aussi suivre les mises à jour :</p>
+          <p style="margin:0" data-i18n="follow_p2">Twitter/X, Discord, Itch.io… (ajoute tes liens ici si besoin)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        © <span id="year"></span> 3CTHS Pixel Game — <span data-i18n="footer_rights">Tous droits réservés</span>
+      </div>
+      <div>
+        <a class="link" href="https://3cthspixelgame.com/app-ads.txt" target="_blank" rel="noopener">app-ads.txt</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Année dynamique
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Lazy-load du trailer YouTube (privacy-enhanced)
+    const btn = document.getElementById('lazyPlay');
+    if(btn){
+      btn.addEventListener('click', () => {
+        const wrap = document.getElementById('trailer');
+        const iframe = document.createElement('iframe');
+        iframe.src = "https://www.youtube-nocookie.com/embed/fyeP8jT8oVY?autoplay=1&mute=0&rel=0&modestbranding=1";
+        iframe.title = "Trailer 3CTHS Pixel Game";
+        iframe.allow = "autoplay; encrypted-media; picture-in-picture";
+        iframe.loading = "lazy";
+        iframe.referrerPolicy = "strict-origin-when-cross-origin";
+        wrap.innerHTML = "";
+        wrap.appendChild(iframe);
+      }, { once: true });
+    }
+
+    // --- i18n ---
+    const I18N = {
+      fr: {
+        title: "3CTHS Pixel Game",
+        lead: "Un monde rétro nerveux, des combats rapides et des secrets à dévoiler.<br>Regarde le trailer, télécharge le jeu et soutiens le projet.",
+        cta_play: "📲 Télécharger sur Google Play",
+        cta_kofi: "☕ Soutenir sur Ko-fi",
+        badge_trailer: "🎬 Trailer intégré",
+        badge_fast: "⚡ Chargement rapide",
+        badge_https: "🔒 HTTPS",
+        feat_gameplay_t: "Gameplay Arcade",
+        feat_gameplay_d: "Des niveaux courts et intenses, parfaits pour jouer en mobilité.",
+        feat_pixel_t: "Pixel-art travaillé",
+        feat_pixel_d: "Ambiance rétro avec des effets modernes pour une vraie personnalité visuelle.",
+        feat_challenge_t: "Défis & Secrets",
+        feat_challenge_d: "Boss, power-ups, speedruns et zones cachées.",
+        contact_h: "Contact",
+        contact_p: "Une question, une idée, une opportunité ?",
+        contact_btn: "Écrire un e-mail",
+        follow_p1: "Tu peux aussi suivre les mises à jour :",
+        follow_p2: "Twitter/X, Discord, Itch.io… (ajoute tes liens ici si besoin)",
+        footer_rights: "Tous droits réservés",
+
+        // Head meta (optionnel : mis à jour au switch)
+        _head: {
+          title: "3CTHS Pixel Game — Site Officiel",
+          desc: "3CTHS Pixel Game — découvre le trailer, télécharge le jeu et soutiens le projet sur Ko-fi.",
+          og_title: "3CTHS Pixel Game — Site Officiel",
+          og_desc: "Découvre le trailer, télécharge le jeu et soutiens le projet."
+        }
+      },
+      en: {
+        title: "3CTHS Pixel Game",
+        lead: "Fast-paced retro action with secrets to uncover.<br>Watch the trailer, download the game, and support the project.",
+        cta_play: "📲 Get it on Google Play",
+        cta_kofi: "☕ Support on Ko-fi",
+        badge_trailer: "🎬 Embedded trailer",
+        badge_fast: "⚡ Fast loading",
+        badge_https: "🔒 HTTPS",
+        feat_gameplay_t: "Arcade Gameplay",
+        feat_gameplay_d: "Short, intense levels — perfect for mobile sessions.",
+        feat_pixel_t: "Polished Pixel Art",
+        feat_pixel_d: "Retro vibes with modern effects for a strong visual identity.",
+        feat_challenge_t: "Challenges & Secrets",
+        feat_challenge_d: "Bosses, power-ups, speedruns, and hidden areas.",
+        contact_h: "Contact",
+        contact_p: "Questions, ideas, opportunities?",
+        contact_btn: "Send an email",
+        follow_p1: "You can also follow updates:",
+        follow_p2: "Twitter/X, Discord, Itch.io… (add your links here if needed)",
+        footer_rights: "All rights reserved",
+
+        _head: {
+          title: "3CTHS Pixel Game — Official Site",
+          desc: "3CTHS Pixel Game — watch the trailer, download the game, and support the project on Ko-fi.",
+          og_title: "3CTHS Pixel Game — Official Site",
+          og_desc: "Watch the trailer, download the game, and support the project."
+        }
+      }
+    };
+
+    function applyLang(lang){
+      const dict = I18N[lang] || I18N.fr;
+      // Corps du contenu
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if(!dict[key]) return;
+        el.innerHTML = dict[key]; // support <br>
+      });
+      // Head (title + metas) pour les partages
+      const headDict = dict._head;
+      if(headDict){
+        document.title = headDict.title;
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if(metaDesc) metaDesc.setAttribute("content", headDict.desc);
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        if(ogTitle) ogTitle.setAttribute("content", headDict.og_title);
+        const ogDesc = document.querySelector('meta[property="og:description"]');
+        if(ogDesc) ogDesc.setAttribute("content", headDict.og_desc);
+      }
+      localStorage.setItem("lang", lang);
+      document.documentElement.lang = lang;
+      // Met à jour le label du bouton play pour l'accessibilité
+      const playBtn = document.getElementById("lazyPlay");
+      if(playBtn){
+        playBtn.setAttribute("aria-label", lang === "en" ? "Play trailer" : "Lire le trailer");
+      }
+    }
+
+    // Détection initiale
+    const saved = localStorage.getItem("lang");
+    const isBrowserEN = ((navigator.language || navigator.userLanguage || "fr").toLowerCase()).startsWith("en");
+    const initial = saved || (isBrowserEN ? "en" : "fr");
+    applyLang(initial);
+
+    // Boutons
+    document.getElementById("lang-fr")?.addEventListener("click", ()=>applyLang("fr"));
+    document.getElementById("lang-en")?.addEventListener("click", ()=>applyLang("en"));
+  </script>
+</body>
+</html>
