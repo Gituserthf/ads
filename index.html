@@ -3,14 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title data-i18n-head="title">3CTHS Pixel Game — Site Officiel</title>
-  <meta name="description" content="3CTHS Pixel Game — découvre le trailer, télécharge le jeu et soutiens le projet sur Ko-fi." data-i18n-head="meta_desc_fr"/>
+
+  <!-- SEO / Indexation -->
+  <title data-i18n-head="title">3CTHS Games — Sites Officiels</title>
+  <meta name="description"
+        content="3CTHS Games — découvre les trailers, télécharge les jeux et soutiens le projet sur Ko-fi."
+        data-i18n-head="meta_desc_fr" />
   <link rel="icon" href="favicon.ico" />
-  <meta property="og:title" content="3CTHS Pixel Game — Site Officiel" data-i18n-head="og_title"/>
-  <meta property="og:description" content="Découvre le trailer, télécharge le jeu et soutiens le projet." data-i18n-head="og_desc"/>
+  <link rel="canonical" href="https://3cthspixelgame.com/" />
+  <link rel="alternate" hreflang="fr" href="https://3cthspixelgame.com/" />
+  <link rel="alternate" hreflang="en" href="https://3cthspixelgame.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://3cthspixelgame.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="3CTHS Games — Sites Officiels" data-i18n-head="og_title"/>
+  <meta property="og:description" content="Découvre les trailers, télécharge les jeux et soutiens le projet." data-i18n-head="og_desc"/>
   <meta property="og:type" content="website" />
   <meta property="og:image" content="poster.jpg" />
+
   <meta name="color-scheme" content="dark light" />
+
   <style>
     :root{
       --bg:#0b0b0c; --fg:#e9ecf1; --muted:#a4adba;
@@ -26,33 +38,39 @@
     a{color:inherit; text-decoration:none}
     .container{max-width:1080px; margin:0 auto; padding:0 20px}
     .hero{position:relative; min-height:86vh; display:grid; place-items:center; overflow:hidden; border-bottom:1px solid #1b1c22}
-     .bg-media{position:absolute; inset:0; z-index:-2; overflow:hidden}
-    .bg-media video, .bg-media img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
-    .bg-media img{display:block}             /* l'image est visible par défaut */
-    .bg-media video{opacity:0; transition:opacity .3s ease; filter:brightness(.45) saturate(1.1)}
-    .bg-media.playing video{opacity:1}       /* on affiche la vidéo seulement quand elle joue */
-
+    .bg-video{position:absolute; inset:0; z-index:-2; overflow:hidden}
+    .bg-video video{width:100%; height:100%; object-fit:cover; filter:brightness(.45) saturate(1.1)}
     .bg-overlay{position:absolute; inset:0; background:radial-gradient(60% 60% at 50% 40%, #0000, #000 70%); z-index:-1}
     .hero-inner{text-align:center; padding:80px 0; backdrop-filter:saturate(120%)}
     h1{font-size:clamp(32px,6vw,64px); margin:0 0 10px}
-    .lead{font-size:clamp(16px,2.2vw,20px); color:var(--muted); margin:0 auto 28px; max-width:720px}
+    .lead{font-size:clamp(16px,2.2vw,20px); color:var(--muted); margin:0 auto 18px; max-width:820px}
     .cta{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
     .btn{
       display:inline-flex; align-items:center; gap:10px;
       padding:14px 18px; border-radius:14px; font-weight:700;
       background:#1a1b22; border:1px solid #2a2c35; box-shadow:var(--shadow);
-      transition:transform .08s ease, border-color .2s ease;
+      transition:transform .08s ease, border-color .2s ease, opacity .2s ease;
+      cursor:pointer;
     }
     .btn:hover{transform:translateY(-2px); border-color:#3a3d48}
     .btn.accent{background:linear-gradient(135deg, var(--accent), var(--accent-2)); color:#031015; border:none}
+    .btn.small{padding:9px 12px; font-weight:700; border-radius:12px}
+    .btn.ghost{background:transparent}
+    .btn.active{outline:2px solid #3a3d48; opacity:1}
+    .btn.inactive{opacity:.6}
+
     .lang-switch{position:absolute; top:16px; right:16px; display:flex; gap:8px}
     .lang-switch .btn{padding:8px 12px; font-weight:600}
+
+    .game-switch{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:18px 0 18px}
     .badges{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:10px}
     .badge{padding:7px 12px; border-radius:999px; background:#14151b; border:1px solid #242633; color:#b6bfcc; font-size:12px}
+
     section{padding:70px 0}
     .card{background:var(--card); border:1px solid #1e202a; border-radius:var(--radius); box-shadow:var(--shadow)}
     .grid{display:grid; gap:22px}
     @media(min-width:900px){ .grid-2{grid-template-columns:1.2fr .8fr} }
+
     .video-wrap{position:relative; border-radius:var(--radius); overflow:hidden; aspect-ratio:16/9; background:#000}
     .video-wrap iframe, .video-wrap .video-lazy{position:absolute; inset:0; width:100%; height:100%; border:0}
     .video-lazy{display:grid; place-items:center; cursor:pointer; background:#000}
@@ -72,8 +90,8 @@
     .link{color:#cfe7ff; text-decoration:underline}
   </style>
 </head>
-<body>
 
+<body>
   <!-- HERO -->
   <header class="hero">
     <!-- Switch langue -->
@@ -82,32 +100,35 @@
       <button class="btn" id="lang-en" aria-label="English">EN</button>
     </div>
 
-    <div class="bg-media" aria-hidden="true">
-      <!-- Image de secours (toujours visible au départ) -->
-      <img src="poster.jpg" alt="">
-      <!-- Vidéo (ne s'affichera que quand elle joue) -->
-      <video poster="poster.jpg" autoplay muted loop playsinline preload="none">
-      <source src="hero.mp4" type="video/mp4">
-      <video
-  autoplay
-  muted
-  loop
-  playsinline
-  webkit-playsinline
-  preload="auto"
-  poster="poster.jpg"
->
-  <source src="hero.mp4" type="video/mp4">
-</video>
-  </div>
+    <div class="bg-video" aria-hidden="true">
+      <!-- Tu peux garder la même vidéo, ou en mettre une par jeu (voir JS plus bas). -->
+      <video id="heroVideo" src="hero.mp4" poster="poster.jpg" autoplay muted loop playsinline></video>
+    </div>
     <div class="bg-overlay" aria-hidden="true"></div>
 
     <div class="hero-inner container">
-      <h1 data-i18n="title">3CTHS Pixel Game</h1>
-      <p class="lead" data-i18n="lead">Un monde rétro nerveux, des combats rapides et des secrets à dévoiler.<br>Regarde le trailer, télécharge le jeu et soutiens le projet.</p>
+      <h1 data-i18n="brand_title">3CTHS Games</h1>
+      <p class="lead" data-i18n="brand_lead">
+        Deux jeux, un univers. Choisis ton expérience : action rétro ou stratégie Tower Defense.
+      </p>
+
+      <!-- Switch jeu -->
+      <div class="game-switch" role="tablist" aria-label="Game switcher">
+        <button class="btn small" id="game-pixel" role="tab" aria-selected="true">🎮 Pixel Game</button>
+        <button class="btn small" id="game-td" role="tab" aria-selected="false">🛰️ Tower Defense</button>
+      </div>
+
+      <!-- Texte + CTA du jeu actif -->
+      <h2 style="margin:10px 0 6px; font-size:22px" data-i18n="game_title">3CTHS Pixel Game</h2>
+      <p class="lead" style="margin-bottom:22px" data-i18n="game_lead">
+        Un monde rétro nerveux, des combats rapides et des secrets à dévoiler.
+      </p>
 
       <div class="cta">
-        <a class="btn accent" data-i18n="cta_play" href="https://play.google.com/store/apps/details?id=org.grawlapp.grawlapp&hl=en-US" target="_blank" rel="noopener">📲 Télécharger sur Google Play</a>
+        <a class="btn accent" id="ctaPlay" data-i18n="cta_play"
+           href="https://play.google.com/store/apps/details?id=org.grawlapp.grawlapp&hl=en-US"
+           target="_blank" rel="noopener">📲 Télécharger sur Google Play</a>
+
         <a class="btn" data-i18n="cta_kofi" href="https://ko-fi.com/3cthspixelgame" target="_blank" rel="noopener">☕ Soutenir sur Ko-fi</a>
       </div>
 
@@ -125,7 +146,7 @@
       <div class="card" style="padding:16px;">
         <div class="video-wrap" id="trailer">
           <button class="video-lazy" id="lazyPlay" aria-label="Lire le trailer">
-            <img src="https://i.ytimg.com/vi/fyeP8jT8oVY/hqdefault.jpg" alt="Aperçu du trailer">
+            <img id="trailerThumb" src="https://i.ytimg.com/vi/fyeP8jT8oVY/hqdefault.jpg" alt="Aperçu du trailer">
             <span class="play" aria-hidden="true"></span>
           </button>
         </div>
@@ -133,16 +154,16 @@
 
       <div class="grid">
         <div class="feature">
-          <h3 style="margin:0 0 6px" data-i18n="feat_gameplay_t">Gameplay Arcade</h3>
-          <p class="muted" style="margin:0" data-i18n="feat_gameplay_d">Des parties stratégiques et captivantes, qui récompensent chaque décision..</p>
+          <h3 style="margin:0 0 6px" data-i18n="feat_1_t">Gameplay Arcade</h3>
+          <p class="muted" style="margin:0" data-i18n="feat_1_d">Des niveaux courts et intenses, parfaits pour jouer en mobilité.</p>
         </div>
         <div class="feature">
-          <h3 style="margin:0 0 6px" data-i18n="feat_pixel_t">Pixel-art travaillé</h3>
-          <p class="muted" style="margin:0" data-i18n="feat_pixel_d">Ambiance rétro avec des effets modernes pour une vraie personnalité visuelle.</p>
+          <h3 style="margin:0 0 6px" data-i18n="feat_2_t">Pixel-art travaillé</h3>
+          <p class="muted" style="margin:0" data-i18n="feat_2_d">Ambiance rétro avec des effets modernes pour une vraie personnalité visuelle.</p>
         </div>
         <div class="feature">
-          <h3 style="margin:0 0 6px" data-i18n="feat_challenge_t">Défis & Secrets</h3>
-          <p class="muted" style="margin:0" data-i18n="feat_challenge_d">Boss, power-ups, speedruns et zones cachées.</p>
+          <h3 style="margin:0 0 6px" data-i18n="feat_3_t">Défis & Secrets</h3>
+          <p class="muted" style="margin:0" data-i18n="feat_3_d">Boss, power-ups, speedruns et zones cachées.</p>
         </div>
       </div>
     </div>
@@ -155,11 +176,12 @@
         <div>
           <h2 style="margin:0 0 8px;" data-i18n="contact_h">Contact</h2>
           <p class="muted" style="margin:0 0 14px;" data-i18n="contact_p">Une question, une idée, une opportunité&nbsp;?</p>
-          <a class="btn" data-i18n="contact_btn" href="mailto:cccthspixelgame@gmail.com?subject=Contact%203CTHS%20Pixel%20Game">Écrire un e-mail</a>
+          <a class="btn" data-i18n="contact_btn"
+             href="mailto:cccthspixelgame@gmail.com?subject=Contact%203CTHS%20Games">Écrire un e-mail</a>
         </div>
         <div class="muted" style="font-size:14px">
           <p style="margin:0 0 8px;" data-i18n="follow_p1">Tu peux aussi suivre les mises à jour :</p>
-          <p style="margin:0" data-i18n="follow_p2"> à venir...</p>
+          <p style="margin:0" data-i18n="follow_p2">Twitter/X, Discord, Itch.io… (ajoute tes liens ici si besoin)</p>
         </div>
       </div>
     </div>
@@ -169,7 +191,7 @@
   <footer>
     <div class="container footer-grid">
       <div>
-        © <span id="year"></span> 3CTHS Pixel Game — <span data-i18n="footer_rights">Tous droits réservés</span>
+        © <span id="year"></span> 3CTHS Games — <span data-i18n="footer_rights">Tous droits réservés</span>
       </div>
       <div>
         <a class="link" href="https://3cthspixelgame.com/app-ads.txt" target="_blank" rel="noopener">app-ads.txt</a>
@@ -177,18 +199,253 @@
     </div>
   </footer>
 
+  <!-- JSON-LD (SEO) : 2 jeux -->
+  <script type="application/ld+json" id="ldjson">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"WebSite",
+        "name":"3CTHS Games",
+        "url":"https://3cthspixelgame.com/"
+      },
+      {
+        "@type":"SoftwareApplication",
+        "name":"3CTHS Pixel Game",
+        "applicationCategory":"GameApplication",
+        "operatingSystem":"Android",
+        "url":"https://3cthspixelgame.com/",
+        "downloadUrl":"https://play.google.com/store/apps/details?id=org.grawlapp.grawlapp&hl=en-US"
+      },
+      {
+        "@type":"SoftwareApplication",
+        "name":"Grawl Tower Defense",
+        "applicationCategory":"GameApplication",
+        "operatingSystem":"Android",
+        "url":"https://3cthspixelgame.com/",
+        "downloadUrl":"PLAY_STORE_TD"
+      }
+    ]
+  }
+  </script>
+
   <script>
     // Année dynamique
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Lazy-load du trailer YouTube (privacy-enhanced)
-    const btn = document.getElementById('lazyPlay');
-    if(btn){
+    // --------------------------
+    // Config "2 jeux" (à adapter)
+    // --------------------------
+    const GAMES = {
+      pixel: {
+        key: "pixel",
+        playUrl: "https://play.google.com/store/apps/details?id=org.grawlapp.grawlapp&hl=en-US",
+        youtubeId: "fyeP8jT8oVY",
+        thumb: "https://i.ytimg.com/vi/fyeP8jT8oVY/hqdefault.jpg",
+        // optionnel : une autre hero video / poster
+        heroVideo: "hero.mp4",
+        heroPoster: "poster.jpg",
+      },
+      td: {
+        key: "td",
+        // TODO: mets ici ton lien Play Store du Tower Defense
+        playUrl: "PLAY_STORE_TD",
+        // TODO: mets ici l'ID YouTube du trailer Tower Defense
+        youtubeId: "YOUTUBE_TD_ID",
+        // TODO: mets ici la miniature du trailer Tower Defense
+        thumb: "https://i.ytimg.com/vi/YOUTUBE_TD_ID/hqdefault.jpg",
+        heroVideo: "hero-td.mp4",
+        heroPoster: "poster-td.jpg",
+      }
+    };
+
+    // --------------------------
+    // i18n (FR/EN) + 2 jeux
+    // --------------------------
+    const I18N = {
+      fr: {
+        brand_title: "3CTHS Games",
+        brand_lead: "Deux jeux, un univers. Choisis ton expérience : action rétro ou stratégie Tower Defense.",
+
+        // Labels communs
+        cta_play: "📲 Télécharger sur Google Play",
+        cta_kofi: "☕ Soutenir sur Ko-fi",
+        badge_trailer: "🎬 Trailer intégré",
+        badge_fast: "⚡ Chargement rapide",
+        badge_https: "🔒 HTTPS",
+
+        // Jeu actif (rempli via applyGame)
+        game_title: "3CTHS Pixel Game",
+        game_lead: "Un monde rétro nerveux, des combats rapides et des secrets à dévoiler.",
+
+        feat_1_t: "Gameplay Arcade",
+        feat_1_d: "Des niveaux courts et intenses, parfaits pour jouer en mobilité.",
+        feat_2_t: "Pixel-art travaillé",
+        feat_2_d: "Ambiance rétro avec des effets modernes pour une vraie personnalité visuelle.",
+        feat_3_t: "Défis & Secrets",
+        feat_3_d: "Boss, power-ups, speedruns et zones cachées.",
+
+        contact_h: "Contact",
+        contact_p: "Une question, une idée, une opportunité ?",
+        contact_btn: "Écrire un e-mail",
+        follow_p1: "Tu peux aussi suivre les mises à jour :",
+        follow_p2: "Twitter/X, Discord, Itch.io… (ajoute tes liens ici si besoin)",
+        footer_rights: "Tous droits réservés",
+
+        // Head meta (global page = 2 jeux)
+        _head: {
+          title: "3CTHS Games — Sites Officiels",
+          desc: "3CTHS Games — découvre les trailers, télécharge les jeux et soutiens le projet sur Ko-fi.",
+          og_title: "3CTHS Games — Sites Officiels",
+          og_desc: "Découvre les trailers, télécharge les jeux et soutiens le projet."
+        },
+
+        // Contenu spécifique par jeu
+        _games: {
+          pixel: {
+            game_title: "3CTHS Pixel Game",
+            game_lead: "Un monde rétro nerveux, des combats rapides et des secrets à dévoiler.",
+            feat_1_t: "Gameplay Arcade",
+            feat_1_d: "Des niveaux courts et intenses, parfaits pour jouer en mobilité.",
+            feat_2_t: "Pixel-art travaillé",
+            feat_2_d: "Ambiance rétro avec des effets modernes pour une vraie personnalité visuelle.",
+            feat_3_t: "Défis & Secrets",
+            feat_3_d: "Boss, power-ups, speedruns et zones cachées."
+          },
+          td: {
+            game_title: "Grawl Tower Defense",
+            game_lead: "Stratégie, progression et vagues d’ennemis : construis, améliore et défends ta planète.",
+            feat_1_t: "Stratégie & placement",
+            feat_1_d: "Choisis tes tours, gère tes ressources, et optimise chaque décision.",
+            feat_2_t: "Progression & étoiles",
+            feat_2_d: "Débloque du contenu, améliore ton arsenal et vise le 5★.",
+            feat_3_t: "Supports & pouvoirs",
+            feat_3_d: "Déclenche des soutiens tactiques et renverse le cours d’une vague."
+          }
+        }
+      },
+
+      en: {
+        brand_title: "3CTHS Games",
+        brand_lead: "Two games, one universe. Choose your experience: retro action or Tower Defense strategy.",
+
+        cta_play: "📲 Get it on Google Play",
+        cta_kofi: "☕ Support on Ko-fi",
+        badge_trailer: "🎬 Embedded trailer",
+        badge_fast: "⚡ Fast loading",
+        badge_https: "🔒 HTTPS",
+
+        game_title: "3CTHS Pixel Game",
+        game_lead: "Fast-paced retro action with secrets to uncover.",
+
+        feat_1_t: "Arcade Gameplay",
+        feat_1_d: "Short, intense levels — perfect for mobile sessions.",
+        feat_2_t: "Polished Pixel Art",
+        feat_2_d: "Retro vibes with modern effects for a strong visual identity.",
+        feat_3_t: "Challenges & Secrets",
+        feat_3_d: "Bosses, power-ups, speedruns, and hidden areas.",
+
+        contact_h: "Contact",
+        contact_p: "Questions, ideas, opportunities?",
+        contact_btn: "Send an email",
+        follow_p1: "You can also follow updates:",
+        follow_p2: "Twitter/X, Discord, Itch.io… (add your links here if needed)",
+        footer_rights: "All rights reserved",
+
+        _head: {
+          title: "3CTHS Games — Official Sites",
+          desc: "3CTHS Games — watch the trailers, download the games, and support the project on Ko-fi.",
+          og_title: "3CTHS Games — Official Sites",
+          og_desc: "Watch the trailers, download the games, and support the project."
+        },
+
+        _games: {
+          pixel: {
+            game_title: "3CTHS Pixel Game",
+            game_lead: "Fast-paced retro action with secrets to uncover.",
+            feat_1_t: "Arcade Gameplay",
+            feat_1_d: "Short, intense levels — perfect for mobile sessions.",
+            feat_2_t: "Polished Pixel Art",
+            feat_2_d: "Retro vibes with modern effects for a strong visual identity.",
+            feat_3_t: "Challenges & Secrets",
+            feat_3_d: "Bosses, power-ups, speedruns, and hidden areas."
+          },
+          td: {
+            game_title: "Grawl Tower Defense",
+            game_lead: "Strategy, progression, and enemy waves: build, upgrade, and defend your planet.",
+            feat_1_t: "Strategy & placement",
+            feat_1_d: "Pick your towers, manage resources, and optimize every decision.",
+            feat_2_t: "Progression & stars",
+            feat_2_d: "Unlock content, upgrade your arsenal, and aim for 5★.",
+            feat_3_t: "Supports & powers",
+            feat_3_d: "Trigger tactical supports and turn the tide of a wave."
+          }
+        }
+      }
+    };
+
+    // --------------------------
+    // State
+    // --------------------------
+    let currentLang = "fr";
+    let currentGame = "pixel";
+
+    // --------------------------
+    // Helpers
+    // --------------------------
+    function applyLang(lang){
+      currentLang = (lang === "en") ? "en" : "fr";
+      const dict = I18N[currentLang];
+
+      // Corps (clés "communes")
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if(dict[key] != null) el.innerHTML = dict[key];
+      });
+
+      // Head (global)
+      if(dict._head){
+        document.title = dict._head.title;
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if(metaDesc) metaDesc.setAttribute("content", dict._head.desc);
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        if(ogTitle) ogTitle.setAttribute("content", dict._head.og_title);
+        const ogDesc = document.querySelector('meta[property="og:description"]');
+        if(ogDesc) ogDesc.setAttribute("content", dict._head.og_desc);
+      }
+
+      // Re-apply game-specific texts for current game (overrides)
+      applyGame(currentGame, { keepTrailerState: true });
+
+      localStorage.setItem("lang", currentLang);
+      document.documentElement.lang = currentLang;
+
+      const playBtn = document.getElementById("lazyPlay");
+      if(playBtn){
+        playBtn.setAttribute("aria-label", currentLang === "en" ? "Play trailer" : "Lire le trailer");
+      }
+    }
+
+    function resetTrailerToLazy(thumbUrl){
+      const wrap = document.getElementById("trailer");
+      wrap.innerHTML = `
+        <button class="video-lazy" id="lazyPlay" aria-label="${currentLang === "en" ? "Play trailer" : "Lire le trailer"}">
+          <img id="trailerThumb" src="${thumbUrl}" alt="Trailer preview">
+          <span class="play" aria-hidden="true"></span>
+        </button>
+      `;
+      attachTrailerClick();
+    }
+
+    function attachTrailerClick(){
+      const btn = document.getElementById('lazyPlay');
+      if(!btn) return;
       btn.addEventListener('click', () => {
         const wrap = document.getElementById('trailer');
+        const g = GAMES[currentGame];
         const iframe = document.createElement('iframe');
-        iframe.src = "https://www.youtube-nocookie.com/embed/fyeP8jT8oVY?autoplay=1&mute=0&rel=0&modestbranding=1";
-        iframe.title = "Trailer 3CTHS Pixel Game";
+        iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(g.youtubeId)}?autoplay=1&mute=0&rel=0&modestbranding=1`;
+        iframe.title = (currentGame === "td") ? "Trailer Tower Defense" : "Trailer Pixel Game";
         iframe.allow = "autoplay; encrypted-media; picture-in-picture";
         iframe.loading = "lazy";
         iframe.referrerPolicy = "strict-origin-when-cross-origin";
@@ -197,131 +454,97 @@
       }, { once: true });
     }
 
-    // --- i18n ---
-    const I18N = {
-      fr: {
-        title: "3CTHS Pixel Game",
-        lead: "Un monde rétro nerveux, des combats rapides et des secrets à dévoiler.<br>Regarde le trailer, télécharge le jeu et soutiens le projet.",
-        cta_play: "📲 Télécharger sur Google Play",
-        cta_kofi: "☕ Soutenir sur Ko-fi",
-        badge_trailer: "🎬 Trailer intégré",
-        badge_fast: "⚡ Chargement rapide",
-        badge_https: "🔒 HTTPS",
-        feat_gameplay_t: "Gameplay Arcade",
-        feat_gameplay_d: "Des parties stratégiques et captivantes, qui récompensent chaque décision.",
-        feat_pixel_t: "Pixel-art travaillé",
-        feat_pixel_d: "Ambiance rétro avec des effets modernes pour une vraie personnalité visuelle.",
-        feat_challenge_t: "Défis & Secrets",
-        feat_challenge_d: "Boss, power-ups, speedruns et zones cachées.",
-        contact_h: "Contact",
-        contact_p: "Une question, une idée, une opportunité ?",
-        contact_btn: "Écrire un e-mail",
-        follow_p1: "Tu peux aussi suivre les mises à jour :",
-        follow_p2: "https://cccthspixelgame.itch.io/grawl-rogue-survival",
-        footer_rights: "Tous droits réservés",
+    function applyGame(gameKey, opts = {}){
+      currentGame = (gameKey === "td") ? "td" : "pixel";
+      const g = GAMES[currentGame];
+      const dict = I18N[currentLang];
+      const gd = (dict._games && dict._games[currentGame]) ? dict._games[currentGame] : {};
 
-        // Head meta (optionnel : mis à jour au switch)
-        _head: {
-          title: "3CTHS Pixel Game — Site Officiel",
-          desc: "3CTHS Pixel Game — découvre le trailer, télécharge le jeu et soutiens le projet sur Ko-fi.",
-          og_title: "3CTHS Pixel Game — Site Officiel",
-          og_desc: "Découvre le trailer, télécharge le jeu et soutiens le projet."
-        }
-      },
-      en: {
-        title: "3CTHS Pixel Game",
-        lead: "Fast-paced retro action with secrets to uncover.<br>Watch the trailer, download the game, and support the project.",
-        cta_play: "📲 Get it on Google Play",
-        cta_kofi: "☕ Support on Ko-fi",
-        badge_trailer: "🎬 Embedded trailer",
-        badge_fast: "⚡ Fast loading",
-        badge_https: "🔒 HTTPS",
-        feat_gameplay_t: "Arcade Gameplay",
-        feat_gameplay_d: "Strategic and immersive gameplay — every decision matters.",
-        feat_pixel_t: "Polished Pixel Art",
-        feat_pixel_d: "Retro vibes with modern effects for a strong visual identity.",
-        feat_challenge_t: "Challenges & Secrets",
-        feat_challenge_d: "Bosses, power-ups, speedruns, and hidden areas.",
-        contact_h: "Contact",
-        contact_p: "Questions, ideas, opportunities?",
-        contact_btn: "Send an email",
-        follow_p1: "You can also follow updates:",
-        follow_p2: "https://cccthspixelgame.itch.io/grawl-rogue-survival",
-        footer_rights: "All rights reserved",
+      // UI tabs
+      const btnPixel = document.getElementById("game-pixel");
+      const btnTD = document.getElementById("game-td");
+      if(btnPixel && btnTD){
+        const isPixel = currentGame === "pixel";
+        btnPixel.classList.toggle("active", isPixel);
+        btnPixel.classList.toggle("inactive", !isPixel);
+        btnTD.classList.toggle("active", !isPixel);
+        btnTD.classList.toggle("inactive", isPixel);
+        btnPixel.setAttribute("aria-selected", isPixel ? "true" : "false");
+        btnTD.setAttribute("aria-selected", !isPixel ? "true" : "false");
+      }
 
-        _head: {
-          title: "3CTHS Pixel Game — Official Site",
-          desc: "3CTHS Pixel Game — watch the trailer, download the game, and support the project on Ko-fi.",
-          og_title: "3CTHS Pixel Game — Official Site",
-          og_desc: "Watch the trailer, download the game, and support the project."
+      // Textes spécifiques jeu
+      const mapKeys = ["game_title","game_lead","feat_1_t","feat_1_d","feat_2_t","feat_2_d","feat_3_t","feat_3_d"];
+      for(const k of mapKeys){
+        const el = document.querySelector(`[data-i18n="${k}"]`);
+        if(el && gd[k] != null) el.innerHTML = gd[k];
+      }
+
+      // CTA Play store
+      const cta = document.getElementById("ctaPlay");
+      if(cta){
+        cta.href = g.playUrl;
+      }
+
+      // Hero video (optionnel)
+      const heroVideo = document.getElementById("heroVideo");
+      if(heroVideo){
+        // change seulement si tu fournis des fichiers différents, sinon garde hero.mp4
+        if(g.heroVideo && heroVideo.getAttribute("src") !== g.heroVideo){
+          heroVideo.setAttribute("poster", g.heroPoster || "poster.jpg");
+          heroVideo.setAttribute("src", g.heroVideo);
+          try{ heroVideo.load(); }catch(e){}
         }
       }
-    };
 
-    function applyLang(lang){
-      const dict = I18N[lang] || I18N.fr;
-      // Corps du contenu
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        const key = el.getAttribute("data-i18n");
-        if(!dict[key]) return;
-        el.innerHTML = dict[key]; // support <br>
-      });
-      // Head (title + metas) pour les partages
-      const headDict = dict._head;
-      if(headDict){
-        document.title = headDict.title;
-        const metaDesc = document.querySelector('meta[name="description"]');
-        if(metaDesc) metaDesc.setAttribute("content", headDict.desc);
-        const ogTitle = document.querySelector('meta[property="og:title"]');
-        if(ogTitle) ogTitle.setAttribute("content", headDict.og_title);
-        const ogDesc = document.querySelector('meta[property="og:description"]');
-        if(ogDesc) ogDesc.setAttribute("content", headDict.og_desc);
+      // Trailer: si on change de jeu, on remet le lazy thumbnail (évite de garder l'iframe du jeu précédent)
+      if(!opts.keepTrailerState){
+        resetTrailerToLazy(g.thumb);
+      }else{
+        // si on garde l'état, au moins mettre à jour la thumb si on est encore en lazy mode
+        const thumb = document.getElementById("trailerThumb");
+        const hasIframe = !!document.querySelector("#trailer iframe");
+        if(thumb && !hasIframe){
+          thumb.src = g.thumb;
+        }
       }
-      localStorage.setItem("lang", lang);
-      document.documentElement.lang = lang;
-      // Met à jour le label du bouton play pour l'accessibilité
-      const playBtn = document.getElementById("lazyPlay");
-      if(playBtn){
-        playBtn.setAttribute("aria-label", lang === "en" ? "Play trailer" : "Lire le trailer");
-      }
+
+      // Update JSON-LD downloadUrl TD si placeholder
+      // (on ne touche pas si tu as déjà mis la vraie valeur)
+      try{
+        const ld = document.getElementById("ldjson");
+        if(ld){
+          const data = JSON.parse(ld.textContent);
+          // Patch TD downloadUrl si placeholder
+          for(const node of (data["@graph"] || [])){
+            if(node["@type"] === "SoftwareApplication" && node.name === "Grawl Tower Defense"){
+              if(node.downloadUrl === "PLAY_STORE_TD") node.downloadUrl = GAMES.td.playUrl;
+            }
+          }
+          ld.textContent = JSON.stringify(data);
+        }
+      }catch(e){}
     }
 
-    // Détection initiale
-    const saved = localStorage.getItem("lang");
+    // --------------------------
+    // Init
+    // --------------------------
+    const savedLang = localStorage.getItem("lang");
     const isBrowserEN = ((navigator.language || navigator.userLanguage || "fr").toLowerCase()).startsWith("en");
-    const initial = saved || (isBrowserEN ? "en" : "fr");
-    applyLang(initial);
+    applyLang(savedLang || (isBrowserEN ? "en" : "fr"));
 
-    // Boutons
+    // jeu par défaut (tu peux mémoriser si tu veux)
+    applyGame("pixel", { keepTrailerState: false });
+
+    // Buttons
     document.getElementById("lang-fr")?.addEventListener("click", ()=>applyLang("fr"));
     document.getElementById("lang-en")?.addEventListener("click", ()=>applyLang("en"));
+
+    document.getElementById("game-pixel")?.addEventListener("click", ()=>applyGame("pixel", { keepTrailerState: false }));
+    document.getElementById("game-td")?.addEventListener("click", ()=>applyGame("td", { keepTrailerState: false }));
+
+    // Trailer click (initial)
+    attachTrailerClick();
   </script>
-  <script>
-  const mediaWrap = document.querySelector('.bg-media');
-  const vid = mediaWrap?.querySelector('video');
-
-  if (vid && mediaWrap) {
-    // Assure les attributs côté JS (certains navigateurs sont tatillons)
-    vid.muted = true;
-    vid.playsInline = true; // idem playsinline
-    // iOS plus ancien: l’attribut HTML webkit-playsinline suffit
-
-    const showVideo = () => mediaWrap.classList.add('playing');
-
-    // Affiche dès que le flux est vraiment prêt
-    vid.addEventListener('playing', showVideo, { once: true });
-    vid.addEventListener('canplay', () => vid.play().catch(() => {}), { once: true });
-    vid.addEventListener('canplaythrough', () => vid.play().catch(() => {}), { once: true });
-
-    // Lance une tentative immédiate aussi (au cas où)
-    Promise.resolve().then(() => vid.play()).catch(() => { /* autoplay bloqué → l'image reste */ });
-
-    // Si erreur, on reste sur l'image
-    vid.addEventListener('error', () => mediaWrap.classList.remove('playing'));
-  }
-</script>
-
-
-  
 </body>
 </html>
